@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.vspro.persist.orm.dao.TransactionMessageDao">
+
+    <resultMap id="baseResultMap" type="com.github.vspro.persist.orm.domain.TransactionMessageDo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="producer_service_id" property="producerServiceId" jdbcType="VARCHAR"/>
+        <result column="consumer_service_id" property="consumerServiceId" jdbcType="VARCHAR"/>
+        <result column="message" property="message" jdbcType="VARCHAR"/>
+        <result column="send_count" property="sendCount" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="last_send_date" property="lastSendDate" jdbcType="TIMESTAMP"/>
+        <result column="deleted" property="deleted" jdbcType="CHAR"/>
+        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="baseColumns">
+        id,
+        producer_service_id,
+        consumer_service_id,
+        message,
+        send_count,
+        status,
+        last_send_date,
+        deleted,
+        gmt_created,
+        gmt_modified
+    </sql>
+
+    <sql id="insertColumnsVal">
+        #{id},
+        #{producerServiceId},
+        #{consumerServiceId},
+        #{message},
+        #{sendCount},
+        #{status},
+        #{lastSendDate},
+        #{deleted},
+        #{gmtCreated},
+        #{gmtModified}
+    </sql>
+
+    <sql id="selectiveInsertColumnsVal">
+        <if test="id != null" >
+            id = #{id},
+        </if>
+        <if test="producerServiceId != null" >
+            producer_service_id = #{producerServiceId},
+        </if>
+        <if test="consumerServiceId != null" >
+            consumer_service_id = #{consumerServiceId},
+        </if>
+        <if test="message != null" >
+            message = #{message},
+        </if>
+        <if test="sendCount != null" >
+            send_count = #{sendCount},
+        </if>
+        <if test="status != null" >
+            status = #{status},
+        </if>
+        <if test="lastSendDate != null" >
+            last_send_date = #{lastSendDate},
+        </if>
+        <if test="deleted != null" >
+            deleted = #{deleted},
+        </if>
+        <if test="gmtCreated != null" >
+            gmt_created = #{gmtCreated},
+        </if>
+        <if test="gmtModified != null" >
+            gmt_modified = #{gmtModified},
+        </if>
+    </sql>
+
+    <sql id="updateColumns">
+        <set>
+            <if test="id != null ">
+                id = #{id,jdbcType=BIGINT},
+            </if>
+            <if test="producerServiceId != null  and producerServiceId != ''">
+                producer_service_id = #{producerServiceId,jdbcType=VARCHAR},
+            </if>
+            <if test="consumerServiceId != null  and consumerServiceId != ''">
+                consumer_service_id = #{consumerServiceId,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null  and message != ''">
+                message = #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="sendCount != null ">
+                send_count = #{sendCount,jdbcType=INTEGER},
+            </if>
+            <if test="status != null ">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="lastSendDate != null ">
+                last_send_date = #{lastSendDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null ">
+                deleted = #{deleted,jdbcType=CHAR},
+            </if>
+            <if test="gmtCreated != null ">
+                gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null ">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+    </sql>
+
+
+    <sql id="enableLogicalDelCondition">
+        and deleted= 2  
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.github.vspro.persist.orm.domain.TransactionMessageDo">
+        insert into t_transaction_message
+        (
+            <include refid="baseColumns"/>
+        )
+        values
+        (
+            <include refid="insertColumnsVal"/>
+        )
+    </insert>
+
+
+   <insert id="insertOrUpdate" parameterType="com.github.vspro.persist.orm.domain.TransactionMessageDo">
+       insert into t_transaction_message
+       (
+           <include refid="baseColumns"/>
+       )
+       values
+       (
+           <include refid="insertColumnsVal"/>
+       )
+       ON DUPLICATE KEY UPDATE
+       <trim suffixOverrides=",">
+           <include refid="selectiveInsertColumnsVal"/>
+       </trim>
+   </insert>
+
+
+
+    <select id="selectByPrimaryKey" resultMap="baseResultMap" parameterType="map" >
+        select
+        <include refid="baseColumns"/>
+        from t_transaction_message
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+                <include refid="enableLogicalDelCondition"/>
+            </trim>
+        </where>
+    </select>
+
+    <select id="selectOneSelective" resultMap="baseResultMap" parameterType="com.github.vspro.persist.orm.domain.TransactionMessageDo" >
+        select
+        <include refid="baseColumns"/>
+        from t_transaction_message
+        <where>
+            <trim suffixOverrides="and">
+                <if test="id != null ">
+                    and id = #{id,jdbcType=BIGINT}
+                </if>
+                <if test="producerServiceId != null  and producerServiceId != ''">
+                    and producer_service_id = #{producerServiceId,jdbcType=VARCHAR}
+                </if>
+                <if test="consumerServiceId != null  and consumerServiceId != ''">
+                    and consumer_service_id = #{consumerServiceId,jdbcType=VARCHAR}
+                </if>
+                <if test="message != null  and message != ''">
+                    and message = #{message,jdbcType=VARCHAR}
+                </if>
+                <if test="sendCount != null ">
+                    and send_count = #{sendCount,jdbcType=INTEGER}
+                </if>
+                <if test="status != null ">
+                    and status = #{status,jdbcType=INTEGER}
+                </if>
+                <if test="lastSendDate != null ">
+                    and last_send_date = #{lastSendDate,jdbcType=TIMESTAMP}
+                </if>
+                <if test="deleted != null ">
+                    and deleted = #{deleted,jdbcType=CHAR}
+                </if>
+                <if test="gmtCreated != null ">
+                    and gmt_created = #{gmtCreated,jdbcType=TIMESTAMP}
+                </if>
+                <if test="gmtModified != null ">
+                    and gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+                </if>
+            </trim>
+            limit 1
+        </where>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.github.vspro.persist.orm.domain.TransactionMessageDo" >
+        update t_transaction_message
+        <set>
+            <if test="producerServiceId != null  and producerServiceId != ''">
+                producer_service_id = #{producerServiceId,jdbcType=VARCHAR},
+            </if>
+            <if test="consumerServiceId != null  and consumerServiceId != ''">
+                consumer_service_id = #{consumerServiceId,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null  and message != ''">
+                message = #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="sendCount != null ">
+                send_count = #{sendCount,jdbcType=INTEGER},
+            </if>
+            <if test="status != null ">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="lastSendDate != null ">
+                last_send_date = #{lastSendDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null ">
+                deleted = #{deleted,jdbcType=CHAR},
+            </if>
+            <if test="gmtCreated != null ">
+                gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null ">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+                <include refid="enableLogicalDelCondition"/>
+            </trim>
+        </where>
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.github.vspro.persist.orm.domain.TransactionMessageDo" >
+        update t_transaction_message
+        <set>
+            producer_service_id = #{producerServiceId,jdbcType=VARCHAR},
+            consumer_service_id = #{consumerServiceId,jdbcType=VARCHAR},
+            message = #{message,jdbcType=VARCHAR},
+            send_count = #{sendCount,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            last_send_date = #{lastSendDate,jdbcType=TIMESTAMP},
+            deleted = #{deleted,jdbcType=CHAR},
+            gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+        </set>
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+                <include refid="enableLogicalDelCondition"/>
+            </trim>
+        </where>
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="map" >
+        delete from t_transaction_message
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+                <include refid="enableLogicalDelCondition"/>
+            </trim>
+        </where>
+    </delete>
+
+    <update id="deleteLogicalByPrimaryKey" parameterType="map" >
+        update t_transaction_message
+        set deleted=1
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+                <include refid="enableLogicalDelCondition"/>
+            </trim>
+        </where>
+    </update>
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
+        insert into t_transaction_message
+        (
+            <include refid="baseColumns"/>
+        ) values
+        <foreach collection="list" item="obj" separator=",">
+            (
+                #{obj.id},
+                #{obj.producerServiceId},
+                #{obj.consumerServiceId},
+                #{obj.message},
+                #{obj.sendCount},
+                #{obj.status},
+                #{obj.lastSendDate},
+                #{obj.deleted},
+                #{obj.gmtCreated},
+                #{obj.gmtModified}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

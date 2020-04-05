@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration PUBLIC "-//vspro.github.com//DTD Mcg Generator 1.0//EN"
+        "http://vspro.github.com/dtd/mcg-config_1_0.dtd">
+
+<configuration>
+
+    <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                    connectionUrl="jdbc:mysql://localhost:3306/spring?serverTimezone=UTC&amp;characterEncoding=utf8&amp;allowMultiQueries=true&amp;useSSL=false"
+                    userName="root" password="111111"/>
+
+    <domainGenerator
+            targetPackage="com.github.vspro.order.persist.orm.domain"
+            targetProject="src/main/java">
+        <property name="rootClass" value="com.github.vspro.persist.base.domain.BaseDo"/>
+    </domainGenerator>
+
+    <sqlmapGenerator
+            targetPackage="mappings"
+            targetProject="src/main/resources"/>
+
+    <mapperGenerator
+            targetPackage="com.github.vspro.order.persist.orm.dao"
+            targetProject="src/main/java">
+        <property name="rootInterface" value="com.github.vspro.persist.base.dao.BaseDao"/>
+    </mapperGenerator>
+
+    <!--table标签要放在最后！！-->
+    <table tableName="t_order"
+           domainObjectName="OrderDo"
+           mapperInterfaceName="OrderDao"
+           mapperXmlName="order"
+           enableLogicalDel="true"
+           logicalDelColName="deleted"
+           logicalDelColVal="1,2"
+    />
+
+
+</configuration>

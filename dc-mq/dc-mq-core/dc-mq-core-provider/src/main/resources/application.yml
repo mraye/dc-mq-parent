@@ -1,0 +1,27 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: mq-core-provider
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 111111
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+
+mybatis:
+  type-aliases-package: com.github.vspro.**.persist.orm.domain
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:mappings/**/*.xml
+
+logging:
+  level:
+    com.github.vspro: debug
