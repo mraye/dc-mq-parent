@@ -3,6 +3,9 @@
 
 **分布式事务解决方案之-柔性事务-最终一致性实现, 这里采用独立消息服务**
 
+*参考《spring cloud微服务全栈技术与案例分析》*
+
+
 
 ### 原理
 
@@ -31,6 +34,15 @@
             + dc-cloud-stock-persist: 持久层
             + dc-cloud-stock-provider: 库存微服务节点
             + dc-cloud-stock-service: 库存service
+            
+            
+### 数据库
+
+用到的表结构在: 
+
++ `dc-mq-parent -> dc-mq-service-provider -> src/main/resources/table/db.sql`
+
+
 
 
 
